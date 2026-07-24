@@ -1,0 +1,53 @@
+name: Build and Deploy Portfolio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
+      - name: Build Docker image
+        run: docker build -t arashworks:latest .
+
+      - name: Login to Docker Registry
+        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login registry.sedaat.ir -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+
+      - name: Tag and Push Docker image
+        run: |
+          docker tag arashworks:latest registry.sedaat.ir/arashworks:latest
+          docker push registry.sedaat.ir/arashworks:latest
+
+      - name: Deploy to Production Server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /opt/arashworks
+            docker pull registry.sedaat.ir/arashworks:latest
+            docker stop arashworks || true
+            docker rm arashworks || true
+            docker run -d --name arashworks -p 5050:80 registry.sedaat.ir/arashworks:latest
+            docker image prune -f
