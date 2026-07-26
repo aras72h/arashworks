@@ -7,12 +7,12 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "vite --port 5050",
+    "dev": "vite --port 7780",
     "build": "vite build",
-    "preview": "vite preview --port 5050",
+    "preview": "vite preview --port 7780",
     "generate:og": "node scripts/generate-og.js",
     "docker:build": "docker build -t arashworks:latest .",
-    "docker:run": "docker run -p 5050:80 arashworks:latest"
+    "docker:run": "docker run -p 7780:80 arashworks:latest"
   },
   "dependencies": {
     "@sedaat/image-gen": "*",

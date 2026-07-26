@@ -8,12 +8,12 @@ Personal portfolio website showcasing projects and skills.
 
 ## Tech Stack
 
--- **Framework:** React 18
--- **Build Tool:** Vite 5
--- **Styling:** CSS3
--- **Canvas Art:** Custom generative art background
--- **Contact Form:** nodemailer + Self-hosted mail server
--- **Deployment:** Docker + Nginx
+- **Framework:** React 18
+- **Build Tool:** Vite 5
+- **Styling:** CSS3
+- **Canvas Art:** Custom generative art background
+- **Contact Form:** nodemailer + Self-hosted mail server
+- **Deployment:** Docker + Nginx
 
 ---
 
@@ -31,7 +31,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5050
+Open http://localhost:7780
 
 ### Generate OG Image
 
@@ -54,10 +54,10 @@ npm run preview
 
 ```bash
 docker build -t arashworks:latest .
-docker run -p 5050:80 arashworks:latest
+docker run -p 7780:80 arashworks:latest
 ```
 
-Open http://localhost:5050
+Open http://localhost:7780
 
 ---
 
@@ -82,6 +82,16 @@ portfolio/
 ├── Dockerfile
 └── nginx.conf
 ```
+
+## GitHub Secrets to add
+
+- Go to repository Settings → Secrets and variables → Actions
+- Add secret: `VITE_API_URL` (value: `https://api.sedaat.ir` for production)
+- Add secret: `REGISTRY_USERNAME` (Docker registry username)
+- Add secret: `REGISTRY_PASSWORD` (Docker registry password)
+- Add secret: `DEPLOY_HOST` (Production server IP or hostname)
+- Add secret: `DEPLOY_USER` (SSH username for deployment)
+- Add secret: `DEPLOY_SSH_KEY` (Private SSH key for deployment)
 
 ## License
 

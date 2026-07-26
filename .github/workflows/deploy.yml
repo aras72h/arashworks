@@ -49,5 +49,5 @@ jobs:
             docker pull registry.sedaat.ir/arashworks:latest
             docker stop arashworks || true
             docker rm arashworks || true
-            docker run -d --name arashworks -p 5050:80 registry.sedaat.ir/arashworks:latest
+            docker run -d --name arashworks -p 7780:80 registry.sedaat.ir/arashworks:latest
             docker image prune -f
