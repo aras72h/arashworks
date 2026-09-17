@@ -7,6 +7,9 @@ export default defineConfig({
     allowedHosts: ["portfolio.sedaat.local"],
   },
   plugins: [react()],
+  build: {
+    sourcemap: false,
+  },
   test: {
     globals: true,
     environment: "jsdom",

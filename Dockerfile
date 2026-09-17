@@ -18,19 +18,22 @@ COPY package.json package-lock.json* ./
 # Copy workspace package.json files so npm can resolve the @sedaat/image-gen workspace dep
 COPY packages/image-gen/package.json ./packages/image-gen/
 
-# Install dependencies
-# --omit=dev skips canvas (only needed for generate:og script, not the Vite build)
+# Install all dependencies (including devDeps for canvas / generate:og)
 RUN npm ci
 
 # Explicitly install the Linux x64 rollup native binary.
 # Windows-generated lockfiles omit Linux optional deps — this patches it at build time.
 RUN npm install --no-save --ignore-scripts @rollup/rollup-linux-x64-gnu
 
-# Copy source code (portfolio app at root + shared image-gen package)
+# Copy source code
 COPY src/ ./src/
 COPY public/ ./public/
 COPY index.html vite.config.js ./
 COPY packages/image-gen/ ./packages/image-gen/
+COPY scripts/ ./scripts/
+
+# Generate OG image into public/ before the Vite build
+RUN node scripts/generate-og.js
 
 # Build the React app (outputs to /app/dist)
 RUN npm run build
@@ -40,7 +43,6 @@ RUN npm run build
 # =========================================
 FROM nginxinc/nginx-unprivileged:${NGINX_VERSION} AS runner
 
-# Copy nginx config from root
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy built files from builder stage (dist already contains everything from public/)
