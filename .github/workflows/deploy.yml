@@ -44,7 +44,9 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script_stop: true
           script: |
+            git config --global --add safe.directory /opt/arashworks
             cd /opt/arashworks
             git pull origin main
             docker compose pull
