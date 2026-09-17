@@ -44,11 +44,14 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script_stop: true
+          request_pty: true
           script: |
+            set -e
             git config --global --add safe.directory /opt/arashworks
             cd /opt/arashworks
             git pull origin main
+            docker stop arashworks || true
+            docker rm arashworks || true
             docker compose pull
             docker compose up -d
             docker image prune -f
