@@ -46,8 +46,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             cd /opt/arashworks
-            docker pull registry.sedaat.ir/arashworks:latest
-            docker stop arashworks || true
-            docker rm arashworks || true
-            docker run -d --name arashworks -p 7780:80 registry.sedaat.ir/arashworks:latest
+            git pull origin main
+            docker compose pull
+            docker compose up -d
             docker image prune -f

@@ -1,0 +1,7 @@
+services:
+  arashworks:
+    image: ${IMAGE}
+    container_name: arashworks
+    restart: unless-stopped
+    ports:
+      - "7780:80"
