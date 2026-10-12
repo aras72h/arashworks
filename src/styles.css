@@ -258,6 +258,8 @@ a {
   background-color: var(--primary);
   color: var(--primary-foreground);
   font-weight: 700;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .tech-stack {
