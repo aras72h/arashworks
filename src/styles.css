@@ -1,28 +1,28 @@
 /* Variables */
 :root {
   /* Style-guide canonical names */
-  --primary:            #FD7E14;
-  --primary-foreground: #FFFFFF;
-  --background:         #F9F4ED;
-  --foreground:         #1A1F2C;
-  --card:               #FFFFFF;
-  --card-foreground:    #1A1F2C;
-  --muted:              #E8DDCE;
-  --muted-foreground:   #576076;
-  --border:             #E8DDCE;
-  --input:              #E8DDCE;
-  --radius:             0.5rem;
-  --success:            #16a34a;
-  --error:              #dc2626;
+  --primary: #fd7e14;
+  --primary-foreground: #ffffff;
+  --background: #f9f4ed;
+  --foreground: #1a1f2c;
+  --card: #ffffff;
+  --card-foreground: #1a1f2c;
+  --muted: #e8ddce;
+  --muted-foreground: #576076;
+  --border: #e8ddce;
+  --input: #e8ddce;
+  --radius: 0.5rem;
+  --success: #16a34a;
+  --error: #dc2626;
 
   /* Spacing scale */
-  --space-sm:  0.75rem;
-  --space-md:  1.25rem;
-  --space-lg:  2rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
 
   /* Typography (unchanged) */
-  --main-font:      'Montserrat', sans-serif;
-  --secondary-font: 'Russo One', sans-serif;
+  --main-font: "Montserrat", sans-serif;
+  --secondary-font: "Russo One", sans-serif;
 }
 
 *,
@@ -295,7 +295,9 @@ a {
   border-radius: 5px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
   z-index: 10;
   width: 220px;
   max-width: 220px;
@@ -305,7 +307,7 @@ a {
 
 /* Tooltip arrow */
 .tech-tag::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: calc(100% + 2px);
   left: 50%;
@@ -314,7 +316,9 @@ a {
   border-top-color: var(--foreground);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
   z-index: 10;
 }
 
@@ -387,8 +391,6 @@ textarea {
   cursor: not-allowed;
 }
 
-
-
 /* Container inline padding on mobile */
 @media (max-width: 600px) {
   .container {
@@ -436,10 +438,18 @@ textarea {
   gap: var(--space-md);
 }
 
+.skills__group {
+  position: relative;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+  transition: border-color 0.2s;
+}
+
+.skills__group:hover {
+  border-left-color: var(--primary);
+}
+
 .skills__group-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -447,20 +457,14 @@ textarea {
   margin-bottom: 0.5rem;
 }
 
-.skills__count {
-  background-color: var(--muted);
-  color: var(--muted-foreground);
-  font-size: 0.7rem;
-  padding: 1px 6px;
-  border-radius: 999px;
-}
-
 .skills__tag {
   background-color: var(--muted);
   padding: 5px 12px;
   border-radius: 5px;
   font-size: 0.9rem;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
   cursor: pointer;
 }
 
