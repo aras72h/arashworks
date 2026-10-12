@@ -6,18 +6,39 @@ import { generateImg } from '@sedaat/image-gen';
  * Falls back to the tech name itself if not listed.
  */
 const TECH_DESCRIPTIONS = {
-  ReactJS:        'UI library for building component-based interfaces',
-  JavaScript:     'Scripting language for web interactivity',
-  HTML:           'Markup language for structuring web pages',
-  CSS:            'Stylesheet language for visual presentation',
-  'Modular Scale':'Typographic scale tool for harmonious sizing',
-  Vercel:         'Cloud platform for frontend deployments',
-  NodeJS:         'JavaScript runtime for server-side code',
-  ExpressJS:      'Minimal web framework for Node.js',
-  PostgreSQL:     'Relational database with advanced features',
-  'JWT Tokens':   'Compact tokens for stateless authentication',
-  bcrypt:         'Password hashing library for secure storage',
-  'Sequelize ORM':'Promise-based ORM for SQL databases',
+  // Frontend
+  ReactJS:          'UI library for building component-based interfaces',
+  'Next.js':        'React framework for server-side rendering and static sites',
+  JavaScript:       'Scripting language for web interactivity',
+  TypeScript:       'Typed superset of JavaScript',
+  HTML:             'Markup language for structuring web pages',
+  CSS:              'Stylesheet language for visual presentation',
+  'Tailwind CSS':   'Utility-first CSS framework',
+  'shadcn/ui':      'Accessible component library built on Radix UI',
+  'Modular Scale':  'Typographic scale tool for harmonious sizing',
+  // Backend
+  NodeJS:           'JavaScript runtime for server-side code',
+  ExpressJS:        'Minimal web framework for Node.js',
+  Python:           'General-purpose scripting and AI/ML language',
+  'JWT Tokens':     'Compact tokens for stateless authentication',
+  bcrypt:           'Password hashing library for secure storage',
+  // Database
+  PostgreSQL:       'Relational database with advanced features',
+  'Sequelize ORM':  'Promise-based ORM for SQL databases',
+  // DevOps
+  Docker:           'Container platform for consistent deployments',
+  Turborepo:        'High-performance monorepo build system',
+  pnpm:             'Fast, disk-efficient JavaScript package manager',
+  Vercel:           'Cloud platform for frontend deployments',
+  // AI
+  'OpenAI Whisper': 'Open-source speech recognition model by OpenAI',
+  PyTorch:          'Machine learning framework with GPU acceleration',
+  CUDA:             'NVIDIA parallel computing platform for GPU acceleration',
+  'ArvanCloud AI':  'Iranian cloud AI platform for LLM API access',
+  // Other
+  WordPress:        'Open-source CMS used as a headless backend',
+  Arduino:          'Open-source microcontroller platform',
+  'C++':            'Systems programming language used for embedded code',
 };
 
 /**

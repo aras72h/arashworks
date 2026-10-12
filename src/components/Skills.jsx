@@ -11,21 +11,20 @@ const skills = [...new Set(projects.flatMap((p) => p.techStack))];
  * Skills not listed here fall into the "Other" group.
  */
 const SKILL_GROUPS = {
-  Frontend:  ['ReactJS', 'JavaScript', 'HTML', 'CSS', 'Modular Scale'],
-  Backend:   ['NodeJS', 'ExpressJS', 'JWT Tokens', 'bcrypt'],
+  Frontend:  ['ReactJS', 'JavaScript', 'HTML', 'CSS', 'Modular Scale', 'Next.js', 'Tailwind CSS', 'shadcn/ui'],
+  Backend:   ['NodeJS', 'ExpressJS', 'JWT Tokens', 'bcrypt', 'Python'],
   Database:  ['PostgreSQL', 'Sequelize ORM'],
-  Tools:     ['Vercel'],
+  DevOps:    ['Docker', 'Turborepo', 'pnpm', 'Vercel'],
+  AI:        ['OpenAI Whisper', 'PyTorch', 'CUDA', 'ArvanCloud AI'],
 };
 
 /**
  * Skills component for the portfolio.
  * Renders each unique technology from the project data as a styled badge/tag,
- * grouped by category (Frontend, Backend, Database, Tools, Other).
+ * grouped by category (Frontend, Backend, Database, DevOps, AI, Other).
  * No props, no state — derived from static project data at module load time.
  */
 export default function Skills() {
-  // Build the grouped entries: for each known category, filter to skills present
-  // in the actual project data. Then collect unrecognised skills into "Other".
   const recognisedSkills = new Set(Object.values(SKILL_GROUPS).flat());
 
   const groups = Object.entries(SKILL_GROUPS)
