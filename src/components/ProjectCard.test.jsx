@@ -6,7 +6,31 @@ import * as fc from 'fast-check';
 import ProjectCard from './ProjectCard.jsx';
 
 // Mock @sedaat/image-gen — no real canvas in jsdom
-vi.mock('@sedaat/image-gen', () => ({ generateImg: vi.fn() }));
+vi.mock('@sedaat/image-gen', () => ({
+  generateImg: vi.fn(),
+  useHoverAnimation: vi.fn(() => ({
+    canvasRef: { current: null },
+    handlers: { onMouseEnter: vi.fn(), onMouseLeave: vi.fn() },
+  })),
+}));
+
+// Mock WeatherContext so ProjectCard renders without a provider
+vi.mock('../context/WeatherContext.jsx', () => ({
+  WeatherContext: {
+    _currentValue: {
+      season: 'fall',
+      weatherStatus: 'fallback',
+      artParams: {
+        lineColor: '#FD7E14',
+        rectColor: '#FD7E14',
+        opacity: 1.0,
+        rectSpeedX: 0.04,
+        lineSpeedY: 0.04,
+        pieceCount: 60,
+      },
+    },
+  },
+}));
 
 // Suppress jsdom canvas getContext errors
 beforeAll(() => {

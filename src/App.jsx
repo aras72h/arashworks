@@ -1,5 +1,6 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext, useState } from 'react';
 import { generateImg } from '@sedaat/image-gen';
+import { WeatherContext } from './context/WeatherContext.jsx';
 import Header from './components/Header.jsx';
 import Hero from './components/Hero.jsx';
 import ProjectCard from './components/ProjectCard.jsx';
@@ -9,6 +10,8 @@ import projects from './data/projects.js';
 
 export default function App() {
   const bgRef = useRef(null);
+  const [seed] = useState(() => Math.floor(Math.random() * 2 ** 32));
+  const { artParams } = useContext(WeatherContext);
 
   useEffect(() => {
     const canvas = bgRef.current;
@@ -16,8 +19,8 @@ export default function App() {
 
     canvas.width = 4000;
     canvas.height = 4000;
-    generateImg(canvas);
-  }, []);
+    generateImg(canvas, { seed, ...artParams });
+  }, [JSON.stringify(artParams)]);
 
   return (
     <>

@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
-import { generateImg } from '@sedaat/image-gen';
+import { useState, useContext } from 'react';
+import { useHoverAnimation } from '@sedaat/image-gen';
+import { WeatherContext } from '../context/WeatherContext.jsx';
 
 /**
  * Tooltip descriptions shown on tech-stack tag hover.
@@ -47,26 +48,18 @@ const TECH_DESCRIPTIONS = {
  *
  * @param {{ id: number, title: string, description: string, techStack: string[], links: {name: string, url: string}[] }} props
  */
-export default function ProjectCard({ title, description, techStack, links }) {
+export default function ProjectCard({ id, title, description, techStack, links }) {
   const [expanded, setExpanded] = useState(false);
-  const canvasRef = useRef(null);
-
-  // Generate the per-card canvas thumbnail on mount
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    canvas.width = 800;
-    canvas.height = 400;
-    generateImg(canvas);
-  }, []);
+  const [seed] = useState(() => Math.floor(Math.random() * 2 ** 32));
+  const { artParams } = useContext(WeatherContext);
+  const { canvasRef, containerRef, handlers } = useHoverAnimation({ renderer: 'lineRect', seed, options: artParams });
 
   const isLong = description.length > 90;
   const truncated = isLong ? description.slice(0, 90) + '…' : description;
 
   return (
-    <article className="project-card">
-      <div className="image-container">
+    <article className="project-card" {...handlers}>
+      <div className="image-container" ref={containerRef}>
         <canvas
           ref={canvasRef}
           className="project-image"

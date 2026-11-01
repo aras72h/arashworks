@@ -10,6 +10,7 @@
     "dev": "vite --port 7780",
     "build": "vite build",
     "preview": "vite preview --port 7780",
+    "test": "vitest run",
     "generate:og": "node scripts/generate-og.js",
     "docker:build": "docker build -t arashworks:latest .",
     "docker:run": "docker run -p 7780:80 arashworks:latest"
@@ -20,8 +21,12 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@vitejs/plugin-react": "^4.3.1",
     "canvas": "^3.2.0",
+    "jsdom": "^29.1.1",
     "vite": "^5.4.2"
   }
 }

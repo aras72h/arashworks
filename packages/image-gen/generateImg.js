@@ -44,7 +44,7 @@ export function getDefaultParams(rendererName) {
 export function generateImg(canvas, options = {}) {
   if (!canvas || !canvas.getContext) return;
 
-  const { renderer: rendererName = 'lineRect', bgColor = '#F9F4ED', opacity = 1, seed, ...params } = options;
+  const { renderer: rendererName = 'lineRect', bgColor = '#F9F4ED', opacity = 1, seed, animTime = 0, ...params } = options;
 
   const renderer = RENDERERS[rendererName];
   if (!renderer) {
@@ -67,7 +67,7 @@ export function generateImg(canvas, options = {}) {
 
   // Draw shapes
   ctx.globalAlpha = opacity;
-  renderer.draw(ctx, W, H, rng, { ...renderer.defaultParams, ...params });
+  renderer.draw(ctx, W, H, rng, { ...renderer.defaultParams, ...params }, animTime);
   ctx.globalAlpha = 1;
 
   // Guarantee pixel (0,0) is always background colour
