@@ -9,18 +9,18 @@ import { generateImg } from '../generateImg.js';
  *   pauses when it scrolls out. Uses IntersectionObserver.
  */
 export function useHoverAnimation({ renderer, seed, options = {} } = {}) {
-  const canvasRef        = useRef(null);
-  const containerRef     = useRef(null);
+  const canvasRef         = useRef(null);
+  const containerRef      = useRef(null);
   const staticSnapshotRef = useRef(null);
-  const rafIdRef         = useRef(null);
-  const isRunningRef     = useRef(false);
-  const animStartTimeRef = useRef(null);
-  const animOffsetRef    = useRef(0);
-  const stableSeedRef    = useRef(null);
+  const rafIdRef          = useRef(null);
+  const isRunningRef      = useRef(false);
+  const animStartTimeRef  = useRef(null);
+  const animOffsetRef     = useRef(0);
+  const stableSeedRef     = useRef(null);
   const prevOptionsKeyRef = useRef(null);
+  const isVisibleRef      = useRef(false); // tracks IntersectionObserver state
 
-  // Keep latest renderer/options in refs so the rAF loop and observer
-  // callbacks always use current values without needing to be recreated.
+  // Always-current refs for renderer and options
   const rendererRef = useRef(renderer);
   const optionsRef  = useRef(options);
   useEffect(() => {
@@ -28,7 +28,7 @@ export function useHoverAnimation({ renderer, seed, options = {} } = {}) {
     optionsRef.current  = options;
   });
 
-  // ── Shared start / stop (stable — never recreated) ──────────────────────────
+  // ── Stable start / stop ─────────────────────────────────────────────────────
 
   const startLoopRef = useRef(null);
   const stopLoopRef  = useRef(null);
@@ -40,7 +40,7 @@ export function useHoverAnimation({ renderer, seed, options = {} } = {}) {
       if (isRunningRef.current) return;
 
       cancelAnimationFrame(rafIdRef.current);
-      isRunningRef.current   = true;
+      isRunningRef.current    = true;
       animStartTimeRef.current = null;
 
       function loop(timestamp) {
@@ -51,7 +51,6 @@ export function useHoverAnimation({ renderer, seed, options = {} } = {}) {
         if (!canvas) return;
 
         const animTime = animOffsetRef.current + (timestamp - animStartTimeRef.current);
-
         generateImg(canvas, {
           renderer: rendererRef.current || 'lineRect',
           seed: stableSeedRef.current,
@@ -93,6 +92,10 @@ export function useHoverAnimation({ renderer, seed, options = {} } = {}) {
       stableSeedRef.current = seed !== undefined ? seed : Math.floor(Math.random() * 2 ** 32);
     }
 
+    // Stop any running loop before redrawing
+    cancelAnimationFrame(rafIdRef.current);
+    isRunningRef.current = false;
+
     canvas.width  = 800;
     canvas.height = 400;
     generateImg(canvas, {
@@ -105,13 +108,20 @@ export function useHoverAnimation({ renderer, seed, options = {} } = {}) {
     const ctx = canvas.getContext('2d');
     staticSnapshotRef.current = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
+    // If the card is currently visible on a touch device, restart the loop
+    // (weather update arrived while card was already on screen)
+    if (isVisibleRef.current) {
+      startLoop();
+    }
+
     return () => {
       cancelAnimationFrame(rafIdRef.current);
+      isRunningRef.current = false;
       staticSnapshotRef.current = null;
     };
   }, [JSON.stringify(options)]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── IntersectionObserver (set up once, never recreated) ─────────────────────
+  // ── IntersectionObserver (set up once on touch devices) ─────────────────────
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (!window.matchMedia('(hover: none)').matches) return;
@@ -121,7 +131,9 @@ export function useHoverAnimation({ renderer, seed, options = {} } = {}) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        const visible = entries[0].isIntersecting;
+        isVisibleRef.current = visible;
+        if (visible) {
           startLoop();
         } else {
           stopLoop();
@@ -132,7 +144,7 @@ export function useHoverAnimation({ renderer, seed, options = {} } = {}) {
 
     observer.observe(container);
     return () => observer.disconnect();
-  }, []); // runs once — startLoop/stopLoop are stable refs, no need to re-run
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Hover handlers for desktop ──────────────────────────────────────────────
   const isTouchDevice =
